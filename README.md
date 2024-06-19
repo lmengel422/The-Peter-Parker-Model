@@ -1,7 +1,7 @@
 # The-Peter-Parker-Model
 <img src="https://github.com/lmengel422/The-Peter-Parker-Model/blob/main/PPM_logo.png" width="75%" height="75%">
 
-Total Exchange Flow Box Model + Nutrient Phytoplankton Zooplankton Detritus Box Model inspired by Peter JS Franks and Parker MacCready. Source code for efflux/reflux box model with Chatwin Solution from Parker MacCready. Modifications to add sinking tracer and NPZD by Lily Engel. 
+Total Exchange Flow Box Model + Nutrient Phytoplankton Zooplankton Detritus Box Model inspired by Peter JS Franks and Parker MacCready. Source code for efflux/reflux box model with Chatwin Solution from Parker MacCready. Modifications to add sinking tracer and NPZD by Lily Engel. DOI: 10.5281/zenodo.12169937.
 
 To recreate results for sinking tracer as in Engel and Stacey 2024, use files traceronly.py and rflx_fun_tracer. Sample run: run traceronly.py -exp Tracer_Sink
 
@@ -9,7 +9,7 @@ For The Peter-Parker Model and to rerun detritus experiment as in Engel and Stac
 
 Relevant citations:
 
-Engel and Stacey 2024
+Engel, L. and Stacey, M. (2024). Timescales of ecological processes, settling, and estuarine transport to create estuarine turbidity maxima: An application of the Peter-Parker Model. 
 
 Engel, L. (2023). Into the Plankter-Verse: Physical-Biological Interactions in Estuaries (Doctoral dissertation). University of California, Berkeley, Department of Civil and Environmental Engineering.
 
