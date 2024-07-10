@@ -9,7 +9,7 @@ For The Peter-Parker Model and to rerun detritus experiment as in Engel and Stac
 
 Relevant citations:
 
-Engel, L. and Stacey, M. (2024). 'Timescales of ecological processes, settling, and estuarine transport to create estuarine turbidity maxima: An application of the Peter-Parker Model.' 
+Engel, L.; Stacey, M. Timescales of ecological processes, settling, and estuarine transport to create estuarine turbidity maxima: An application of the Peter-Parker Model. Preprints 2024, 2024061471. https://doi.org/10.20944/preprints202406.1471.v1
 
 Engel, L. (2023). 'Into the Plankter-Verse: Physical-Biological Interactions in Estuaries' (Doctoral dissertation). University of California, Berkeley, Department of Civil and Environmental Engineering.
 
