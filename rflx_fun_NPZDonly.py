@@ -188,7 +188,7 @@ def npzd_calc(nsp, ndp, psp, pdp, zsp, zdp, dsp, ddp, hs, hd, info_tup, riv=0, o
         # instantaneous phytoplankton growth rate
         mu0 = 2.2/86400 # maximum instantaneous growth rate: s-1
         ks = 4.6 # half-satuaration for nitrate uptake: uM N
-        alpha = 0.07/86400 # initial slope of growth-ligh curve: (W m-2)-1 s-1    
+        alpha = 0.06/86400 # initial slope of growth-ligh curve: (W m-2)-1 s-1    
         mu_i = mu0 * (N/(ks + N)) * (alpha * E)/np.sqrt(mu0**2 + alpha**2*E**2)
         return mu_i
 
@@ -471,7 +471,7 @@ def npzd_calc_change_ecol(nsp, ndp, psp, pdp, zsp, zdp, dsp, ddp, hs, hd, info_t
         # instantaneous phytoplankton growth rate
         mu0 = mu0/86400 # maximum instantaneous growth rate: s-1
         ks = 4.6 # half-satuaration for nitrate uptake: uM N
-        alpha = 0.07/86400 # initial slope of growth-ligh curve: (W m-2)-1 s-1    
+        alpha = 0.06/86400 # initial slope of growth-ligh curve: (W m-2)-1 s-1    
         mu_i = mu0 * (N/(ks + N)) * (alpha * E)/np.sqrt(mu0**2 + alpha**2*E**2)
         return mu_i
 
