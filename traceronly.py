@@ -119,8 +119,8 @@ class tracer_tests:
             self.tau_q_deep_v2 = 100*86400
             self.tau_q_deep_v3 = 100*86400
             self.tau_q_deep_v4 = 100*86400
-        self.net_q_up = self.Qout0*(-self.a0)+self.Qin1*self.a1
-        self.net_q_down = self.Qout0*(self.a0)-self.Qin1*self.a1
+        self.net_q_up = np.abs(self.Qout0*(-self.a0)+self.Qin1*self.a1)
+        self.net_q_down = np.abs(self.Qout0*(self.a0)-self.Qin1*self.a1)
         self.tau_net_up = self.dvs/(self.net_q_up)
         self.tau_net_down = self.dvd/np.abs(self.net_q_down)
         self.Kdisp = ((1-self.a0)*self.Qout0+(1-a1)*self.Qin1)**2*self.L_real/((self.Qout0*self.a0+self.Qin1*self.a1)*self.B*(self.hs+self.hd))
