@@ -151,7 +151,7 @@ class NPZD_tests:
         self.tau_net_up = self.dvs/(self.net_q_up)
         self.tau_net_down = self.dvd/np.abs(self.net_q_down)
         self.Kdisp = ((1-self.a0)*self.Qout0+(1-a1)*self.Qin1)**2*self.L_real/((self.Qout0*self.a0+self.Qin1*self.a1)*self.B*(self.hs+self.hd))
-        self.tau_disp = self.L_real**2/self.Kdisp[1:]
+        self.tau_disp = self.L_real**2/(100*self.Kdisp[1:]) #Multiplication factor: 1/100
         self.tau_grow = 1/self.mu_is[-1,:]
         self.tau_graze = psa[-1,:]/(self.I_s[-1,:]*zsa[-1,:]) #s
         self.tau_grow_d = 1/self.mu_id[-1,:] #s
