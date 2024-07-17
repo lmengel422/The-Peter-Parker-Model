@@ -124,7 +124,7 @@ class tracer_tests:
         self.tau_net_up = self.dvs/(self.net_q_up)
         self.tau_net_down = self.dvd/np.abs(self.net_q_down)
         self.Kdisp = ((1-self.a0)*self.Qout0+(1-a1)*self.Qin1)**2*self.L_real/((self.Qout0*self.a0+self.Qin1*self.a1)*self.B*(self.hs+self.hd))
-        self.tau_disp = self.L_real**2/(100*self.Kdisp[1:]) #Multiplication factor: 1/100
+        self.tau_disp = self.L_real**2/(1*self.Kdisp[1:]) #Multiplication factor: 1/1 (range usually 1/30 to 1/100)
         if dec > 0:
             self.tau_dec = 1/dec
         else:
