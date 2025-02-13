@@ -151,7 +151,7 @@ class NPZD_tests:
         self.tau_net_up = self.dvs/(self.net_q_up)
         self.tau_net_down = self.dvd/np.abs(self.net_q_down)
         self.Kdisp = ((1-self.a0)*self.Qout0+(1-a1)*self.Qin1)**2*self.L_real/((self.Qout0*self.a0+self.Qin1*self.a1)*self.B*(self.hs+self.hd))
-        self.tau_disp = self.L_real**2/(1*self.Kdisp[1:]) #Multiplication factor: 1/1 (range usually 1/30 to 1/100)
+        self.tau_disp = self.L_real**2/(1*self.Kdisp[1:]) #Multiplication factor: 1
         self.tau_grow = 1/self.mu_is[-1,:]
         self.tau_graze = psa[-1,:]/(self.I_s[-1,:]*zsa[-1,:]) #s
         self.tau_grow_d = 1/self.mu_id[-1,:] #s
@@ -195,7 +195,7 @@ if exp == 'change_B':
 else:
     B_range = [3e3] #width (m)
     
-if exp == 'change_qr':
+if exp == 'change_qr' or exp == 'change_Nriv_qr':
     qr_range = [250,500,1000,2000,3000,4000,5000,6000,7000]
 else:
     qr_range = [1000] #river flux (m/s)
@@ -337,17 +337,24 @@ for ii in range(len(B_range)):
            #     print('Water flux in at mouth %0.3f [c m3/s]' % (Qin[-1]))
             #    print('Water flux in at head %0.3f [c m3/s]' % (Qr[-1]))
 
-            elif exp == 'change_Nriv':
-                Nriv_range = [5,10,15,20,30,40]
+            elif exp == 'change_Nriv' or exp == 'change_Nriv_qr':
+                Nriv_range = [2.5,5,10,15,20,25,30,35,40]
 
-                change_Nriv = {}
+                if exp == 'change_Nriv':
+                    change_Nriv = {}
+                elif kk == 0:
+                    change_Nriv_qr = {}
+
                 for i in range(len(Nriv_range)):
                     Nriv = Nriv_range[i]
                     csa, cda, times = rfun.c_calc(csp, cdp, info_tup, ocn=Sin[-1])
                     nsa, nda, psa, pda, zsa, zda, dsa, dda, times, psterms, pdterms, dterms, mu_is, mu_id, I_s, I_d = rfun.npzd_calc(nsp,ndp,psp,pdp,zsp,zdp,dsp,ddp,hs,hd,info_tup,Nriv=Nriv,Nocn=Nocn,Priv=P0,Pocn=P0,Zriv=Z0,Zocn=Z0)
 
-                    change_Nriv['Nriv{0}'.format(i)] = NPZD_tests(input_tup,ws,mu0,I0,mu_is,mu_id,I_s, I_d,m,r,Nriv,Nocn,csa,cda,nsa,nda,psa,pda,zsa,zda,dsa,dda,times,psterms,pdterms,seq,dterms)
-            
+                    if exp == 'change_Nriv':
+                        change_Nriv['Nriv{0}'.format(i)] = NPZD_tests(input_tup,ws,mu0,I0,mu_is,mu_id,I_s, I_d,m,r,Nriv,Nocn,csa,cda,nsa,nda,psa,pda,zsa,zda,dsa,dda,times,psterms,pdterms,seq,dterms)
+                    else: 
+                        change_Nriv_qr['Nriv_qr{0}'.format(len(Nriv_range)*kk+i)] = NPZD_tests(input_tup,ws,mu0,I0,mu_is,mu_id,I_s, I_d,m,r,Nriv,Nocn,csa,cda,nsa,nda,psa,pda,zsa,zda,dsa,dda,times,psterms,pdterms,seq,dterms)
+
             elif exp == 'P_growth':
                 mu0_range = [1.1,2.2,4.4,8.8,17.6] # max inst growth rate: d-1
                 P_growth = {}
