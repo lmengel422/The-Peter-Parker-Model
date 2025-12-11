@@ -1,7 +1,7 @@
 # The-Peter-Parker-Model
 <img src="https://github.com/lmengel422/The-Peter-Parker-Model/blob/main/PPM_logo.png" width="75%" height="75%">
 
-Total Exchange Flow Box Model + Nutrient Phytoplankton Zooplankton Detritus Box Model inspired by Peter JS Franks and Parker MacCready. Source code for efflux/reflux box model with Chatwin Solution from Parker MacCready. Modifications to add sinking tracer and NPZD by Lily Engel. DOI: 10.5281/zenodo.12169937.
+Total Exchange Flow Box Model + Nutrient Phytoplankton Zooplankton Detritus Box Model inspired by Peter JS Franks and Parker MacCready. Source code for efflux/reflux box model with Chatwin Solution from Parker MacCready. Modifications to add sinking tracer and NPZD by Lily Engel. DOI: https://doi.org/10.5281/zenodo.17904925.
 
 To recreate results for sinking tracer as in Engel and Stacey 2024, use files traceronly.py and rflx_fun_tracer. Sample run: run traceronly.py -exp Tracer_Sink
 
