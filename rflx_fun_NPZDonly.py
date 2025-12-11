@@ -76,7 +76,7 @@ def c_calc(csp, cdp, info_tup, riv=0, ocn=0, Ts=np.inf, Td=np.inf, Cs=1, Cd=0):
     times = np.nan * np.ones((NS))
     tta = 0 # index for periodic saves
     for tt in range(NT):
-        # boundary conditions 
+        # boundary conditions Dirichlet Neumann Combo
         Cout0 = np.concatenate(([riv], csp[:-1])) # river 
         Cin1 = np.concatenate((cdp[1:], [ocn])) # ocean 
         # update fields
@@ -266,8 +266,7 @@ def npzd_calc(nsp, ndp, psp, pdp, zsp, zdp, dsp, ddp, hs, hd, info_tup, riv=0, o
         ws_array[0] = 0 
     
     for tt in range(NT):
-        #'''
-        # boundary conditions Dirichlet
+        # boundary conditions Dirichlet-Neumann Combo
         Nout0 = np.concatenate(([Nriv], nsp[:-1])) # river
         Nin1 = np.concatenate((ndp[1:], [Nocn])) # ocean
         Pout0 = np.concatenate(([Priv], psp[:-1])) # river - no phytoplankton
@@ -276,17 +275,7 @@ def npzd_calc(nsp, ndp, psp, pdp, zsp, zdp, dsp, ddp, hs, hd, info_tup, riv=0, o
         Zin1 = np.concatenate((zdp[1:], [Zocn])) # ocean - match concentration
         Dout0 = np.concatenate(([Driv], dsp[:-1])) # river - detritus
         Din1 = np.concatenate((ddp[1:], [Docn])) # ocean - match concentration
-        '''
-        # boundary conditions Neumann
-        Nout0 = np.concatenate(([Nriv], nsp[:-1])) # river
-        Nin1 = np.concatenate((ndp[1:], [Nocn])) # ocean
-        Pout0 = np.concatenate(([psp[1]], psp[:-1])) # river - no phytoplankton
-        Pin1 = np.concatenate((pdp[1:], [pdp[-2]])) # ocean - match concentration
-        Zout0 = np.concatenate(([zsp[1]], zsp[:-1])) # river - no zooplankton
-        Zin1 = np.concatenate((zdp[1:], [zdp[-2]])) # ocean - match concentration
-        Dout0 = np.concatenate(([dsp[1]], dsp[:-1])) # river - detritus
-        Din1 = np.concatenate((ddp[1:], [ddp[-2]])) # ocean - match concentration
-        '''
+
         # update fields
         if tt>0:
             t[tt] = t[tt-1]+dt
@@ -547,8 +536,7 @@ def npzd_calc_change_ecol(nsp, ndp, psp, pdp, zsp, zdp, dsp, ddp, hs, hd, info_t
         ws_array[0] = 0 
     
     for tt in range(NT):
-        #'''
-        # boundary conditions Dirichlet
+        # boundary conditions Dirichlet-Neumann Combo
         Nout0 = np.concatenate(([Nriv], nsp[:-1])) # river
         Nin1 = np.concatenate((ndp[1:], [Nocn])) # ocean
         Pout0 = np.concatenate(([Priv], psp[:-1])) # river - no phytoplankton
@@ -557,17 +545,7 @@ def npzd_calc_change_ecol(nsp, ndp, psp, pdp, zsp, zdp, dsp, ddp, hs, hd, info_t
         Zin1 = np.concatenate((zdp[1:], [Zocn])) # ocean - match concentration
         Dout0 = np.concatenate(([Driv], dsp[:-1])) # river - detritus
         Din1 = np.concatenate((ddp[1:], [Docn])) # ocean - match concentration
-        '''
-        # boundary conditions Neumann all except N
-        Nout0 = np.concatenate(([Nriv], nsp[:-1])) # river
-        Nin1 = np.concatenate((ndp[1:], [Nocn])) # ocean
-        Pout0 = np.concatenate(([psp[1]], psp[:-1])) # river - no phytoplankton
-        Pin1 = np.concatenate((pdp[1:], [pdp[-2]])) # ocean - match concentration
-        Zout0 = np.concatenate(([zsp[1]], zsp[:-1])) # river - no zooplankton
-        Zin1 = np.concatenate((zdp[1:], [zdp[-2]])) # ocean - match concentration
-        Dout0 = np.concatenate(([dsp[1]], dsp[:-1])) # river - detritus
-        Din1 = np.concatenate((ddp[1:], [ddp[-2]])) # ocean - match concentration
-        '''
+
         # update fields
         if tt>0:
             t[tt] = t[tt-1]+dt
