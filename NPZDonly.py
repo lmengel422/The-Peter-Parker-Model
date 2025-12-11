@@ -22,6 +22,9 @@ import rflx_fun_NPZDonly as rfun
 reload(rfun)
 
 import argparse
+import pickle
+import os
+
 parser = argparse.ArgumentParser()
 parser.add_argument('-exp', type=str, default='salt')
 parser.add_argument('-dec', type=float, default=0.0)
@@ -37,6 +40,7 @@ class NPZD_tests:
         Socn,Qin,Qout,B,Qr,Sin,Sout,hs,hd,L,a0,a1,dt,NT,NS,xm,ds,dvs,dvd = input_tup
         self.Socn = Socn
         self.Qout = Qout[-1]
+        self.Qin = Qin[-1]
         self.Qout_full = Qout
         self.Qin_full = Qin
         self.ws = ws
@@ -165,7 +169,7 @@ class NPZD_tests:
         self.tau_zdie = zsa[-1,:]/self.xi #s
         self.tau_zdie_d = zda[-1,:]/self.xi #s
         self.tau_remin = 1/self.r #s
-        self.dterms = dterms
+      #  self.dterms = dterms
     #    self.tau_phys_s = 1/(1/self.tau_q_shall_v2 + 1/self.tau_net_up[self.locps] + 1/self.tau_disp[self.locps])
      #   self.tau_phys_d = 1/(1/self.tau_q_deep_v2 + 1/self.tau_net_down[self.locpd] + 1/self.tau_disp[self.locpd])
     #    self.tau_bio_s = 1/(1/self.tau_grow[self.locps] + 1/self.tau_graze[self.locps] + 1/(self.tau_die*86400))
@@ -174,8 +178,8 @@ class NPZD_tests:
     def __str__(self):
         return f"ws = {self.ws_day} m/d, Qout = {self.Qout} m^3/s, B = {self.B} m, Qr = {self.Qr} m^3/s, mu0 = {self.mu0} 1/d, I0 = {self.I0} 1/d, m = {self.m} 1/d, Nriv = {self.Nriv} uM N"
 
-if exp == 'change_Socn':
-    Socn_range = [5, 10, 15, 20, 25, 30, 35, 40]
+if exp == 'change_Socn' or exp == 'change_Socn_Nocn' or exp == 'change_four':
+    Socn_range = [5, 10, 16.25, 20, 25, 30, 35, 40, 57.5] #ocean salinity [psu]
      #   Socn_range = np.linspace(5,100,20)
 elif exp == 'change_Socn_zoom':
     Socn_range = [5, 6, 7, 8, 9, 10]
@@ -195,10 +199,11 @@ if exp == 'change_B':
 else:
     B_range = [3e3] #width (m)
     
-if exp == 'change_qr' or exp == 'change_Nriv_qr':
+if exp == 'change_qr' or exp == 'change_Nriv_qr' or exp == 'change_four':
     qr_range = [250,500,1000,2000,3000,4000,5000,6000,7000]
+
 else:
-    qr_range = [1000] #river flux (m/s)
+    qr_range = [1000] #river flux (m/s) 4000
 
 for ii in range(len(B_range)):
     for jj in range(len(Socn_range)):
@@ -264,7 +269,7 @@ for ii in range(len(B_range)):
             P0=0.01 #[uM N] 1
             Z0=0.01 #[uM N] 0.1
             D0=0  #[uM N] 0
-            Nocn = 0 #rfun.nut_sal(Socn)  #[uM N] 
+            Nocn = 5 #rfun.nut_sal(Socn)  #[uM N] 
             
             #Default values for non-test cases
             mu0 = 2.2 # max inst growth rate: d-1 2.2
@@ -342,7 +347,7 @@ for ii in range(len(B_range)):
 
                 if exp == 'change_Nriv':
                     change_Nriv = {}
-                elif kk == 0:
+                elif kk == 0 and exp == 'change_Nriv_qr':
                     change_Nriv_qr = {}
 
                 for i in range(len(Nriv_range)):
@@ -352,7 +357,7 @@ for ii in range(len(B_range)):
 
                     if exp == 'change_Nriv':
                         change_Nriv['Nriv{0}'.format(i)] = NPZD_tests(input_tup,ws,mu0,I0,mu_is,mu_id,I_s, I_d,m,r,Nriv,Nocn,csa,cda,nsa,nda,psa,pda,zsa,zda,dsa,dda,times,psterms,pdterms,seq,dterms)
-                    else: 
+                    elif exp == 'change_Nriv_qr': 
                         change_Nriv_qr['Nriv_qr{0}'.format(len(Nriv_range)*kk+i)] = NPZD_tests(input_tup,ws,mu0,I0,mu_is,mu_id,I_s, I_d,m,r,Nriv,Nocn,csa,cda,nsa,nda,psa,pda,zsa,zda,dsa,dda,times,psterms,pdterms,seq,dterms)
 
             elif exp == 'P_growth':
@@ -392,16 +397,22 @@ for ii in range(len(B_range)):
 
                     P_mort['m{0}'.format(i)] = NPZD_tests(input_tup,ws,mu0,I0,mu_is,mu_id,I_s, I_d,m,r,Nriv,Nocn,csa,cda,nsa,nda,psa,pda,zsa,zda,dsa,dda,times,psterms,pdterms,seq,dterms)
                     
-            elif exp == 'change_Nocn':
-                Nocn_range = [5,10,15,20,30,40]
+            elif exp == 'change_Nocn' or exp == 'change_Socn_Nocn':
+                Nocn_range = [2.5,5,10,15,20,25,30,35,40]
 
-                change_Nocn = {}
+                if exp == 'change_Nocn':
+                    change_Nocn = {}
+                elif jj == 0 and exp == 'change_Socn_Nocn':
+                    change_Socn_Nocn = {}
+
                 for i in range(len(Nocn_range)):
                     Nocn = Nocn_range[i]
                     csa, cda, times = rfun.c_calc(csp, cdp, info_tup, ocn=Sin[-1])
                     nsa, nda, psa, pda, zsa, zda, dsa, dda, times, psterms, pdterms, dterms, mu_is, mu_id, I_s, I_d = rfun.npzd_calc(nsp,ndp,psp,pdp,zsp,zdp,dsp,ddp,hs,hd,info_tup,Nriv=Nriv,Nocn=Nocn,Priv=P0,Pocn=P0,Zriv=Z0,Zocn=Z0)
-
-                    change_Nocn['Nocn{0}'.format(i)] = NPZD_tests(input_tup,ws,mu0,I0,mu_is,mu_id,I_s, I_d,m,r,Nriv,Nocn,csa,cda,nsa,nda,psa,pda,zsa,zda,dsa,dda,times,psterms,pdterms,seq,dterms)
+                    if exp == 'change_Nocn':
+                        change_Nocn['Nocn{0}'.format(i)] = NPZD_tests(input_tup,ws,mu0,I0,mu_is,mu_id,I_s, I_d,m,r,Nriv,Nocn,csa,cda,nsa,nda,psa,pda,zsa,zda,dsa,dda,times,psterms,pdterms,seq,dterms)
+                    elif exp == 'change_Socn_Nocn':
+                        change_Socn_Nocn['Nocn_Qout{0}'.format(len(Nocn_range)*jj+i)] = NPZD_tests(input_tup,ws,mu0,I0,mu_is,mu_id,I_s, I_d,m,r,Nriv,Nocn,csa,cda,nsa,nda,psa,pda,zsa,zda,dsa,dda,times,psterms,pdterms,seq,dterms)
             
             elif exp == 'change_remin':
                 r_range = [0.05, 0.1, 0.2, 0.3, 0.4, 0.6, 0.8] # remineralization: d-1
@@ -415,6 +426,33 @@ for ii in range(len(B_range)):
                     nsa, nda, psa, pda, zsa, zda, dsa, dda, times, psterms, pdterms, dterms, mu_is, mu_id, I_s, I_d = rfun.npzd_calc_change_ecol(nsp,ndp,psp,pdp,zsp,zdp,dsp,ddp,hs,hd,info_tup,ws,Nriv=N0,Nocn=Nocn,Priv=P0,Pocn=P0,Zriv=Z0,Zocn=Z0,mu0=mu0,I0=I0,m=m,r=r)
 
                     change_remin['r{0}'.format(i)] = NPZD_tests(input_tup,ws,mu0,I0,mu_is,mu_id,I_s, I_d,m,r,Nriv,Nocn,csa,cda,nsa,nda,psa,pda,zsa,zda,dsa,dda,times,psterms,pdterms,seq,dterms)
+            
+            elif exp == 'change_four':
+                Nriv_range = [2.5,5,10,15,20,25,30,35,40]
+                Nocn_range = [2.5,5,10,15,20,25,30,35,40]
+
+                if jj == 0 and kk == 0:
+                    results_dir = "change_four_results_part_2"
+                    os.makedirs(results_dir, exist_ok=True)  # Create directory if it doesn't exist
+                    index = 0
+
+                for i in range(len(Nriv_range)):
+                    Nriv = Nriv_range[i]
+                    for j in range(len(Nocn_range)):
+                        Nocn = Nocn_range[j]
+                        csa, cda, times = rfun.c_calc(csp, cdp, info_tup, ocn=Sin[-1])
+                        nsa, nda, psa, pda, zsa, zda, dsa, dda, times, psterms, pdterms, dterms, mu_is, mu_id, I_s, I_d = rfun.npzd_calc(nsp,ndp,psp,pdp,zsp,zdp,dsp,ddp,hs,hd,info_tup,Nriv=Nriv,Nocn=Nocn,Priv=P0,Pocn=P0,Zriv=Z0,Zocn=Z0)
+
+                        # Create NPZD_tests object
+                        npzd_test = NPZD_tests(input_tup, ws, mu0, I0, mu_is, mu_id, I_s, I_d, m, r, Nriv, Nocn, csa, cda, nsa, nda, psa, pda, zsa, zda, dsa, dda, times, psterms, pdterms, seq, dterms)
+
+                        # Serialize (save) the object into a separate file
+                        filename = os.path.join(results_dir, f"npzd_test_{index}.pkl")
+                        with open(filename, 'wb') as f:
+                            pickle.dump(npzd_test, f)
+
+                        index += 1
+                        print(f'Test {index} completed: Nriv = {Nriv:.2f}, Nocn = {Nocn:.2f}, Qr = {Qr[-1]:.2f}, Qin = {Qin[-1]:.2f}')
             else:
                 print('exp = %s not supported' % (exp))
         #        sys.exit()
