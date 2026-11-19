@@ -9,6 +9,8 @@ For The Peter-Parker Model and to rerun detritus experiment as in Engel and Stac
 
 Relevant citations:
 
+Engel, L., & Stacey, M. (2026). Relative contributions of terrestrial and oceanic nutrient loading on phytoplankton concentration in an estuary. Ecological Modelling, 520, 111676. https://doi.org/10.1016/j.ecolmodel.2026.111676
+
 Engel, L.; Stacey, M. Timescales of Ecological Processes, Settling, and Estuarine Transport to Create Estuarine Turbidity Maxima: An Application of the Peter–Parker Model. Water 2024, 16, 2084. https://doi.org/10.3390/w16152084
 
 Engel, L. (2023). 'Into the Plankter-Verse: Physical-Biological Interactions in Estuaries' (Doctoral dissertation). University of California, Berkeley, Department of Civil and Environmental Engineering.
